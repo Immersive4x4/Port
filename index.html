@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Immersive - Portfolio</title>
+  <style>
+    /* Reset & base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background: #fff; /* Light theme default */
+      color: #222;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      min-height: 100vh;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    button {
+      cursor: pointer;
+      border: none;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.7em 1.5em;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #410d94, #05f1d2); /* lapis blue gradient */
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6em;
+      box-shadow:
+        0 4px 15px rgba(26, 65, 120, 0.6),
+        inset 0 -2px 5px rgba(26, 65, 120, 0.4);
+      transition:
+        background 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.2s ease;
+      user-select: none;
+    }
+    button:hover, button:focus {
+      background: linear-gradient(135deg, #1b447e, #2a5ca6);
+      box-shadow:
+        0 6px 20px rgba(26, 65, 120, 0.8),
+        inset 0 -3px 8px rgba(26, 65, 120, 0.5);
+      transform: translateY(-3px);
+      outline: none;
+    }
+    button svg {
+      width: 20px;
+      height: 20px;
+      fill: white;
+      flex-shrink: 0;
+    }
+
+    /* Container */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 5rem;
+    }
+
+    /* Header / Hero */
+    header {
+      padding: 4rem 1.5rem 3rem;
+      text-align: center;
+      animation: fadeSlideIn 1s ease forwards;
+      opacity: 0;
+      transform: translateY(40px);
+      user-select: none;
+    }
+    header h1 {
+      font-size: clamp(2rem, 6vw, 3.75rem);
+      margin-bottom: 0.25rem;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      color: #26619c; /* lapis blue */
+      text-shadow: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      justify-content: center;
+    }
+    header h1 svg {
+      width: 36px;
+      height: 36px;
+      fill: #26619c;
+      flex-shrink: 0;
+    }
+    header p {
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: #444a66;
+      max-width: 550px;
+      margin: 0 auto;
+      font-weight: 600;
+      text-shadow: none;
+    }
+
+    /* Sections */
+    section {
+      margin-bottom: 3.5rem;
+      background: #f9f9f9;
+      padding: 2.25rem 2rem;
+      border-radius: 1.2rem;
+      box-shadow: 0 12px 30px rgba(38, 97, 156, 0.15);
+      animation: fadeSlideInUp 1s ease forwards;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    section h2 {
+      font-size: 1.9rem;
+      margin-bottom: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #26619c; /* lapis blue */
+      border-bottom: 3px solid #26619c;
+      display: inline-block;
+      padding-bottom: 0.3rem;
+      user-select: none;
+      text-shadow: none;
+    }
+
+    /* About */
+    #about p {
+      font-size: 1.15rem;
+      line-height: 1.65;
+      max-width: 720px;
+      color: #333;
+      user-select: text;
+    }
+
+    /* Skills and Languages (new section) */
+    #skills {
+      background: #fff;
+      padding: 2rem 2rem;
+      border-radius: 1.2rem;
+      box-shadow: 0 12px 30px rgba(38, 97, 156, 0.15);
+      margin-bottom: 3.5rem;
+      animation: fadeSlideInUp 1s ease forwards;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    #skills h2 {
+      color: #26619c;
+      border-bottom: 3px solid #26619c;
+      margin-bottom: 1rem;
+      user-select: none;
+    }
+    #skills ul {
+      list-style-type: none;
+      padding-left: 0;
+      font-size: 1.15rem;
+      color: #444;
+      user-select: text;
+    }
+    #skills ul li {
+      margin-bottom: 0.5rem;
+    }
+    #skills strong {
+      color: #1b447e;
+    }
+
+    /* Projects */
+    #projects .project-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .project {
+      background: #fff;
+      padding: 1.8rem 1.6rem 2.2rem;
+      border-radius: 1rem;
+      box-shadow:
+        0 8px 25px rgba(38, 97, 156, 0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+      user-select: none;
+    }
+    .project:hover {
+      transform: translateY(-8px);
+      box-shadow:
+        0 20px 50px rgba(38, 97, 156, 0.5);
+    }
+    .project h3 {
+      margin-top: 0;
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: #1b447e;
+      margin-bottom: 0.8rem;
+      user-select: text;
+      text-shadow: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4em;
+    }
+    .project h3 svg {
+      width: 20px;
+      height: 20px;
+      fill: #26619c;
+      flex-shrink: 0;
+    }
+    .project p {
+      flex-grow: 1;
+      color: #444;
+      font-size: 1rem;
+      margin-bottom: 1.3rem;
+      user-select: text;
+    }
+    .download-btn {
+      align-self: flex-start;
+    }
+
+    /* Contact */
+    #contact p {
+      font-size: 1.15rem;
+      margin-bottom: 1rem;
+      max-width: 600px;
+      color: #333;
+      user-select: text;
+    }
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .social-links button {
+      background: linear-gradient(135deg, #2a5ca6, #1b447e);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.6em 1.2em;
+      border-radius: 40px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6em;
+      box-shadow:
+        0 4px 15px rgba(26, 65, 120, 0.6),
+        inset 0 -2px 5px rgba(26, 65, 120, 0.4);
+      transition:
+        background 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.2s ease;
+      user-select: none;
+      border: none;
+      cursor: pointer;
+    }
+    .social-links button:hover, .social-links button:focus {
+      background: linear-gradient(135deg, #1b447e, #2a5ca6);
+      box-shadow:
+        0 6px 20px rgba(26, 65, 120, 0.8),
+        inset 0 -3px 8px rgba(26, 65, 120, 0.5);
+      transform: translateY(-3px);
+      outline: none;
+    }
+    .social-links button svg {
+      width: 20px;
+      height: 20px;
+      fill: white;
+      flex-shrink: 0;
+    }
+
+    /* Modal for contact info */
+    #modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    #modal {
+      background: white;
+      border-radius: 1rem;
+      max-width: 90vw;
+      width: 320px;
+      padding: 1.5rem 2rem;
+      box-shadow: 0 6px 30px rgba(38, 97, 156, 0.4);
+      text-align: center;
+      user-select: text;
+      color: #222;
+      position: relative;
+      font-family: 'Poppins', sans-serif;
+    }
+    #modal h3 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: #26619c;
+      font-weight: 700;
+      text-shadow: none;
+    }
+    #modal p {
+      font-size: 1.1rem;
+      margin: 0.5rem 0 1.2rem;
+      word-break: break-word;
+    }
+    #modal button.close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 1.4rem;
+      color: #26619c;
+      cursor: pointer;
+      user-select: none;
+      padding: 0;
+      line-height: 1;
+    }
+    #modal button.close-btn:hover {
+      color: #1b447e;
+    }
+
+    /* Scroll fade-in animations */
+    @keyframes fadeSlideIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes fadeSlideInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 2.6rem;
+      }
+      section {
+        padding: 1.5rem 1.2rem;
+      }
+      #projects .project-list {
+        grid-template-columns: 1fr;
+      }
+      .social-links button {
+        font-size: 0.9rem;
+        padding: 0.5em 1em;
+        gap: 0.4em;
+      }
+    }
+
+    /* ==== Dark mode ==== */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #121212;
+        color: #eee;
+      }
+      header h1 {
+        color: #a1c4e8;
+        text-shadow: 0 2px 10px rgba(38, 97, 156, 0.9);
+      }
+      header p {
+        color: #a8c3e8;
+        text-shadow: 0 1px 5px rgba(38, 97, 156, 0.5);
+      }
+      section, #skills {
+        background: rgba(38, 97, 156, 0.12);
+        box-shadow: 0 12px 30px rgba(38, 97, 156, 0.25);
+        backdrop-filter: blur(12px);
+      }
+      section h2, #skills h2 {
+        color: #aac7f3;
+        border-bottom-color: #26619c;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      }
+      #about p, #skills ul {
+        color: #d1def8cc;
+      }
+      .project {
+        background: rgba(38, 97, 156, 0.18);
+        box-shadow: 0 10px 30px rgba(38, 97, 156, 0.5);
+      }
+      .project h3 {
+        color: #cee1ff;
+        text-shadow: 0 1px 5px rgba(38, 97, 156, 0.8);
+      }
+      .project p {
+        color: #dbe8ffdd;
+      }
+      #contact p {
+        color: #c8dbffdd;
+      }
+      .social-links button {
+        background: linear-gradient(135deg, #1b447e, #2a5ca6);
+        box-shadow:
+          0 10px 25px rgba(38, 97, 156, 0.6),
+          inset 0 -3px 8px rgba(38, 97, 156, 0.4);
+      }
+      .social-links button:hover, .social-links button:focus {
+        background: linear-gradient(135deg, #2a5ca6, #1b447e);
+        box-shadow:
+          0 14px 40px rgba(38, 97, 156, 0.9),
+          inset 0 -5px 12px rgba(38, 97, 156, 0.6);
+      }
+      .social-links button svg {
+        fill: #aac7f3;
+      }
+      #modal {
+        background: #1b2d4a;
+        color: #d1def8cc;
+        box-shadow: 0 6px 30px rgba(38, 97, 156, 0.8);
+      }
+      #modal h3 {
+        color: #aac7f3;
+      }
+      #modal button.close-btn {
+        color: #aac7f3;
+      }
+      #modal button.close-btn:hover {
+        color: #f0f6ff;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>
+      Immersive
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false" title="Immersive Logo">
+        <circle cx="12" cy="12" r="10" stroke="#26619c" stroke-width="2" fill="none"/>
+        <path d="M7 12l3 3 7-7" stroke="#26619c" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </h1>
+    <p>10x dev, game developer, web developer, app developer</p>
+  </header>
+
+  <main class="container" id="main-content">
+
+    <section id="about" class="fadein">
+      <h2>About Me</h2>
+      <p>
+        Hi! I'm Immersive, a passionate developer who loves making games and apps that users enjoy.
+        I specialize in modern web technologies and creating engaging user experiences with
+        smooth animations and beautiful design.
+      </p>
+    </section>
+
+    <section id="skills" class="fadein" style="animation-delay: 0.1s;">
+      <h2>Skills & Languages</h2>
+      <ul>
+        <li><strong>What I can do:</strong> Android Studio apps, Unreal Engine, Unity, Roblox Studio</li>
+        <li><strong>Languages I know:</strong> Python, LuaU, HTML, Kotlin</li>
+        <li><strong>Learning:</strong> C#, C++, JavaScript, Java</li>
+      </ul>
+    </section>
+
+    <section id="projects" class="fadein" style="animation-delay: 0.15s;">
+      <h2>My Projects</h2>
+      <div class="project-list">
+        <article class="project">
+          <h3>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false" title="Shape Wars ULTRA Icon">
+              <circle cx="12" cy="12" r="10" fill="#26619c"/>
+              <path d="M7 12l3 3 7-7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Shape Wars ULTRA
+          </h3>
+          <p>Be a shape, fight shapes.</p>
+          <a href="downloads/shape-wars-ultra.zip" download class="download-btn" aria-label="Download Shape Wars ULTRA">
+            <button>
+              <!-- Download Icon SVG -->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 20h14v-2H5v2zm7-18v12l4-4h-3V4h-2v6H8l4 4z"/>
+              </svg>
+              Download
+            </button>
+          </a>
+        </article>
+
+        <article class="project">
+          <h3>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false" title="SimpleTTS Icon">
+              <rect x="5" y="6" width="14" height="12" fill="#26619c" rx="2" ry="2"/>
+              <path d="M8 10h8v4H8z" fill="#1b447e"/>
+            </svg>
+            SimpleTTS
+          </h3>
+          <p>Simple text to speech program.</p>
+          <a href="downloads/simpletts.exe" download class="download-btn" aria-label="Download SimpleTTS">
+            <button>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 20h14v-2H5v2zm7-18v12l4-4h-3V4h-2v6H8l4 4z"/>
+              </svg>
+              Download
+            </button>
+          </a>
+        </article>
+
+        <article class="project">
+          <h3>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false" title="YTmate Icon">
+              <path fill="#26619c" d="M12 2a10 10 0 100 20 10 10 0 000-20z"/>
+              <path fill="#1b447e" d="M10 15l5-3-5-3v6z"/>
+            </svg>
+            YTmate
+          </h3>
+          <p>A program that lets you download YouTube videos via the link you provide, at high quality.</p>
+          <a href="downloads/ytmate.rar" download class="download-btn" aria-label="Download YTmate">
+            <button>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 20h14v-2H5v2zm7-18v12l4-4h-3V4h-2v6H8l4 4z"/>
+              </svg>
+              Download
+            </button>
+          </a>
+        </article>
+
+        <article class="project">
+          <h3>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false" title="Simple Tetris Icon">
+              <rect x="3" y="3" width="6" height="6" fill="#26619c"/>
+              <rect x="9" y="3" width="6" height="6" fill="#1b447e"/>
+              <rect x="3" y="9" width="6" height="6" fill="#1b447e"/>
+              <rect x="9" y="9" width="6" height="6" fill="#26619c"/>
+            </svg>
+            Simple Tetris
+          </h3>
+          <p>A simple HTML Tetris game.</p>
+          <!-- This button links to a separate html page with your tetris game -->
+          <a href="downloads/simple-tetris.html" class="download-btn" aria-label="Go to Simple Tetris game">
+            <button type="button">
+              <!-- Arrow icon for redirect -->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false" style="transform: rotate(90deg);">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              Play Now
+            </button>
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="fadein" style="animation-delay: 0.3s;">
+      <h2>Contact Me</h2>
+      <p>If you'd like to get in touch, feel free to reach out on any of the platforms below.</p>
+      <div class="social-links">
+        <button id="btn-github" aria-label="Go to GitHub Profile" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="white" d="M12 0.297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.11.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.744.084-.729.084-.729 1.205.084 1.838 1.237 1.838 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.776.418-1.305.76-1.605-2.665-.3-5.467-1.334-5.467-5.933 0-1.31.468-2.382 1.236-3.222-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.52 11.52 0 013.003-.404c1.02.005 2.045.138 3.003.404 2.29-1.552 3.297-1.23 3.297-1.23.655 1.653.243 2.873.12 3.176.77.84 1.236 1.912 1.236 3.222 0 4.61-2.807 5.63-5.48 5.922.43.372.81 1.102.81 2.222 0 1.606-.015 2.896-.015 3.286 0 .32.218.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+          </svg>
+          GitHub
+        </button>
+
+        <button id="btn-email" aria-label="Show Email Address" title="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="white" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+          Email
+        </button>
+
+        <button id="btn-discord" aria-label="Show Discord Username" title="Discord">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="white" d="M20 3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 13c-.828 0-1.5-.672-1.5-1.5S14.172 13 15 13s1.5.672 1.5 1.5S15.828 16 15 16zm-6 0c-.828 0-1.5-.672-1.5-1.5S8.172 13 9 13s1.5.672 1.5 1.5S9.828 16 9 16z"/>
+          </svg>
+          Discord
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal-bg" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+    <div id="modal">
+      <button class="close-btn" aria-label="Close modal">&times;</button>
+      <h3 id="modal-title">Title</h3>
+      <p id="modal-content"></p>
+    </div>
+  </div>
+
+  <script>
+    // Fade in sections on scroll
+    const fadeIns = document.querySelectorAll('.fadein');
+    const options = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -80px 0px"
+    };
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.style.opacity = 1;
+          entry.target.style.transform = "translateY(0)";
+          observer.unobserve(entry.target);
+        }
+      });
+    }, options);
+    fadeIns.forEach(section => {
+      observer.observe(section);
+    });
+
+    // Modal logic
+    const modalBg = document.getElementById('modal-bg');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalContent = document.getElementById('modal-content');
+    const closeBtn = modal.querySelector('.close-btn');
+
+    function showModal(title, content) {
+      modalTitle.textContent = title;
+      modalContent.textContent = content;
+      modalBg.style.display = 'flex';
+      modalBg.focus();
+    }
+
+    function closeModal() {
+      modalBg.style.display = 'none';
+      modalTitle.textContent = '';
+      modalContent.textContent = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    modalBg.addEventListener('click', (e) => {
+      if (e.target === modalBg) closeModal();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === "Escape" && modalBg.style.display === 'flex') closeModal();
+    });
+
+    // Social buttons
+    document.getElementById('btn-github').addEventListener('click', () => {
+      window.open('https://github.com/Immersive4x4', '_blank');
+    });
+
+    document.getElementById('btn-email').addEventListener('click', () => {
+      showModal('Email Address', 'Immersive69420@gmail.com');
+    });
+
+    document.getElementById('btn-discord').addEventListener('click', () => {
+      showModal('Discord Username', 'Immersive4x4');
+    });
+  </script>
+</body>
+</html>
+
